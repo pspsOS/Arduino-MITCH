@@ -16,12 +16,11 @@ Adafruit_GPS GPS(&mySerial);
 
 char gpsString[BUF_SIZE][MAX_NMEA];
 char buff;
+int n = 0;
 
 void setup()
 {
-  Serial.begin(115200);
-  pinMode(sendPin, INPUT);
-  Wire.begin();
+  Serial.begin(115200); //for debugging purposes
   GPS.begin(9600);
   // uncomment this line to turn on RMC (recommended minimum) and GGA (fix data) including altitude
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
@@ -33,7 +32,9 @@ void setup()
 
 void loop()
 { 
-  c = GPS.read();
-  if(GPS.newNMEAreceived())
+  int c = GPS.read();
+  if(GPS.newNMEAreceived()){
     strncpy(gpsString[n++], GPS.lastNMEA(), MAX_NMEA);
+  }
+  Serial.print(gpsString[BUF_SIZE][MAX_NMEA]);
 }
