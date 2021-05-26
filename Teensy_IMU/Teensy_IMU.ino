@@ -1,4 +1,7 @@
 #include "ICM_20948.h" // Click here to get the library: http://librarymanager/All#SparkFun_ICM_20948_IMU
+#include <SPI.h>
+#include <SD.h>
+#include <Wire.h>
 
 //Globals
 //#define USE_SPI       // Uncomment this to use SPI
@@ -10,6 +13,7 @@
 #define AD0_VAL 1      // The value of the last bit of the I2C address.                \
                        // On the SparkFun 9DoF IMU breakout the default is 1, and when \
                        // the ADR jumper is closed the value becomes 0
+#define redLED 3 // optional red status indication LED, could be a buzzer etc
 
 //Handles
 #ifdef USE_SPI
@@ -32,6 +36,9 @@ typedef struct ICM20948 {
   int16_t tmp_out;
 };
 struct ICM20948 ICM20948_t;
+
+File logfile;
+char filename[20] = { '\0' };
 
 void setup() {
   SERIAL_PORT.begin(115200);
@@ -171,6 +178,27 @@ void setup() {
   SERIAL_PORT.println(F("Configuration complete!"));
 
   // IMU Setup End
+
+  //File Creation
+  // create filename that will not overwrite other flight data
+  strncpy(filename, "/FLIGHT00.csv", 13);
+  for (uint8_t i = 0; i < 100; i++) {
+    filename[7] = '0' + i/10;
+    filename[8] = '0' + i%10;
+    if (! SD.exists(filename)) {
+      break;
+    }
+  }
+
+  // attempt to open the file, restart otherwise
+  logfile = SD.open(filename, FILE_WRITE);
+  if(!logfile) {
+    digitalWrite(redLED, HIGH);
+    return;
+  }
+  // write data schema on top line of file
+  logfile.println("GPS_str,BMP_temp,BMP_press,BMP_alt,IMU_xaccel,IMU_yaccel,IMU_zaccel,IMU_xgyro,IMU_ygyro,IMU_zgyro,IMU_xmag,IMU_ymag,IMU_zmag,IMU_temp");
+  logfile.close();
 }
 
 void loop()
