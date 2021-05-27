@@ -14,10 +14,6 @@ Adafruit_GPS GPS(&mySerial);
 #define gpsI2CAddress 0x12
 #define BUF_SIZE (8)
 
-char gpsString[BUF_SIZE][MAX_NMEA];
-char buff;
-int n = 0;
-
 void setup()
 {
   Serial.begin(115200); //for debugging purposes
@@ -32,9 +28,6 @@ void setup()
 
 void loop()
 { 
-  int c = GPS.read();
-  if(GPS.newNMEAreceived()){
-    strncpy(gpsString[n++], GPS.lastNMEA(), MAX_NMEA);
-  }
-  Serial.print(gpsString[BUF_SIZE][MAX_NMEA]);
+  int gpsdata = GPS.read();
+  Serial.write(gpsdata);
 }
