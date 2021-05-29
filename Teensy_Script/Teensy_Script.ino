@@ -1,4 +1,4 @@
-#include <Adafruit_GPS.h>
+#include <TinyGPS.h>
 #include <SoftwareSerial.h>
 #include <string.h>
 #include <Wire.h>
@@ -6,26 +6,18 @@
 #include <Adafruit_BMP280.h>
 #include "ICM_20948.h" // Click here to get the library: http://librarymanager/All#SparkFun_ICM_20948_IMU
 #include <SD.h>
-// Connect the GPS Power pin to 5V
-// Connect the GPS Ground pin to ground
-// Connect the GPS TX (transmit) pin to Digital 8
-// Connect the GPS RX (receive) pin to Digital 7
 
 // ---------------------------------------------------------------------------------------------------------------- //
 // GPS def
 #define MAX_NMEA (80)
 // BMP def
-#define BMP_SCK  (13)
-#define BMP_MISO (12)
-#define BMP_MOSI (11)
-#define BMP_CS   (10)
 // IMU def
 //#define USE_SPI       // Uncomment this to use SPI
 #define SERIAL_PORT Serial
 #define SPI_PORT SPI     // Your desired SPI port.       Used only when "USE_SPI" is defined
 #define SPI_FREQ 5000000 // You can override the default SPI frequency
-#define CS_PIN 2         // Which pin you connect CS to. Used only when "USE_SPI" is defined
-#define WIRE_PORT Wire // Your desired Wire port.      Used when "USE_SPI" is not defined
+#define CS_PIN 10         // Which pin you connect CS to. Used only when "USE_SPI" is defined
+#define WIRE_PORT Wire1 // Your desired Wire port.      Used when "USE_SPI" is not defined
 #define AD0_VAL 1      // The value of the last bit of the I2C address.                \
                        // On the SparkFun 9DoF IMU breakout the default is 1, and when \
                        // the ADR jumper is closed the value becomes 0
@@ -34,15 +26,15 @@
 // Nand def
 
 // ---------------------------------------------------------------------------------------------------------------- //
-// you can change the pin numbers to match your wiring:
-SoftwareSerial mySerial(8, 7);
-Adafruit_GPS GPS(&mySerial);
-Adafruit_BMP280 bmp(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
-uint32_t timeStartup = 0;
-
-// ---------------------------------------------------------------------------------------------------------------- //
 // GPS handle
+SoftwareSerial mySerial(0, 1);
+// Connect the GPS TX (transmit) pin to Digital 8
+// Connect the GPS RX (receive) pin to Digital 7
+TinyGPS gps;
+#define gpsPort Serial1
 // BMP handle
+Adafruit_BMP280 bmp;
+uint32_t timeStartup = 0;
 // IMU handle
 #ifdef USE_SPI
 ICM_20948_SPI myICM; // If using SPI create an ICM_20948_SPI object
@@ -50,14 +42,15 @@ ICM_20948_SPI myICM; // If using SPI create an ICM_20948_SPI object
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
 #endif
 // SD handle
-File logfile;
-char filename[20] = { '\0' };
+//File logfile;
+//char filename[20] = { '\0' };
 // Nand handle
 
 // ---------------------------------------------------------------------------------------------------------------- //
 // GPS Struct
 typedef struct gpsData {
-  uint32_t packets;
+  uint32_t timeStamp;
+  char packets;
 };
 struct gpsData gpsData_t;
 // BMP Struct
@@ -69,6 +62,7 @@ typedef struct bmpData {
 struct bmpData bmpData_t;
 // IMU Struct
 typedef struct ICM20948 {
+  uint32_t timeStamp;
   int16_t accel_xout;
   int16_t accel_yout;
   int16_t accel_zout;
@@ -82,24 +76,17 @@ typedef struct ICM20948 {
 };
 struct ICM20948 ICM20948_t;
 
-// SD Struct
-// Nand Struct
-
 // ---------------------------------------------------------------------------------------------------------------- //
 void setup()
 {
   // GPS Setup
-  Serial.begin(115200); //for debugging purposes
-  GPS.begin(9600);
-  // uncomment this line to turn on RMC (recommended minimum) and GGA (fix data) including altitude
-  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-  // Set the update rate
-  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // 1 Hz update rate
-  // Request updates on antenna status, comment out to keep quiet
-  //GPS.sendCommand(PGCMD_ANTENNA);
+  Serial.begin(9600); //for debugging purposes
+  while(!Serial);
+  gpsPort.begin(9600);
+  Serial.println("GPS Setup Complete");
   
   // BMP Setup
-  if(!bmp.begin(BMP280_ADDRESS_ALT, BMP280_CHIPID)) {
+  if (!bmp.begin()) {
     Serial.println(F("Could not connect to BMP280 :( sadge"));
 
     while (1) delay(10);
@@ -110,6 +97,7 @@ void setup()
                   Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
                   Adafruit_BMP280::FILTER_X16,      /* Filtering. */
                   Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
+  Serial.println("BMP Setup Complete");
 
   // IMU Setup
   #ifdef USE_SPI
@@ -241,25 +229,27 @@ void setup()
 
   SERIAL_PORT.println();
   SERIAL_PORT.println(F("Configuration complete!"));
+  
   // SD Setup
-  strncpy(filename, "/FLIGHT00.csv", 13);
-  for (uint8_t i = 0; i < 100; i++) {
-    filename[7] = '0' + i/10;
-    filename[8] = '0' + i%10;
-    if (! SD.exists(filename)) {
-      break;
-    }
-  }
-
-  // attempt to open the file, restart otherwise
-  logfile = SD.open(filename, FILE_WRITE);
-  if(!logfile) {
-    digitalWrite(redLED, HIGH);
-    return;
-  }
-  // write data schema on top line of file
-  logfile.println("GPS_str,BMP_temp,BMP_press,BMP_alt,IMU_xaccel,IMU_yaccel,IMU_zaccel,IMU_xgyro,IMU_ygyro,IMU_zgyro,IMU_xmag,IMU_ymag,IMU_zmag,IMU_temp");
-  logfile.close();
+//  strncpy(filename, "/FLIGHT00.csv", 13);
+//  for (uint8_t i = 0; i < 100; i++) {
+//    filename[7] = '0' + i/10;
+//    filename[8] = '0' + i%10;
+//    if (! SD.exists(filename)) {
+//      break;
+//    }
+//  }
+//
+//  // attempt to open the file, restart otherwise
+//  logfile = SD.open(filename, FILE_WRITE);
+//  if(!logfile) {
+//    digitalWrite(redLED, HIGH);
+//    return;
+//  }
+//  // write data schema on top line of file
+//  logfile.println("GPS_str,BMP_temp,BMP_press,BMP_alt,IMU_xaccel,IMU_yaccel,IMU_zaccel,IMU_xgyro,IMU_ygyro,IMU_zgyro,IMU_xmag,IMU_ymag,IMU_zmag,IMU_temp");
+//  logfile.close();
+  
   // Nand Setup
 }
 
@@ -267,8 +257,21 @@ void setup()
 void loop()
 { 
   // GPS loop
-  gpsData_t.packets = GPS.read();
-  Serial.write(gpsData_t.packets);
+  gpsData_t.timeStamp = (millis() - timeStartup);
+  char c;
+  if (gpsPort.available()) {
+      gpsData_t.packets = gpsPort.read();
+      c = gpsPort.read();
+  }
+  Serial.write(c);
+
+    Serial.print(F("Time Stamp = "));
+    Serial.print(gpsData_t.timeStamp);
+    Serial.println(" ms");
+    
+    Serial.print(F("Packets = "));
+    Serial.write(gpsData_t.packets);
+    Serial.println("");
 
   // BMP loop
   bmpData_t.timeStamp = (millis() - timeStartup);
@@ -284,7 +287,7 @@ void loop()
     Serial.println(" *C");
 
     Serial.print(F("Pressure = "));
-    //Serial.write(bmpData_t.raw_p);
+    Serial.print(int(bmpData_t.raw_p));
     Serial.println(" Pa");
 
     Serial.println();
@@ -296,6 +299,9 @@ void loop()
     myICM.getAGMT();              // The values are only updated when you call 'getAGMT'
     //printRawAGMT( myICM.agmt ); // Uncomment this to see the raw values, taken directly from the agmt structure
     //printScaledAGMT(&myICM);      // This function takes into account the scale settings from when the measurement was made to calculate the values with units
+    //Timestamp
+    ICM20948_t.timeStamp = (millis() - timeStartup);
+    
     //Accel Data
     ICM20948_t.accel_xout = myICM.accX();
     ICM20948_t.accel_yout = myICM.accY();
@@ -314,80 +320,52 @@ void loop()
     //Temp Data
     ICM20948_t.tmp_out = myICM.temp();
 
-    //Debugging Statements
-    SERIAL_PORT.print("Scaled. Acc (mg) [ ");
-  printFormattedFloat(ICM20948_t.accel_xout, 5, 2);
-  SERIAL_PORT.print(", ");
-  printFormattedFloat(ICM20948_t.accel_yout, 5, 2);
-  SERIAL_PORT.print(", ");
-  printFormattedFloat(ICM20948_t.accel_zout, 5, 2);
-  SERIAL_PORT.print(" ], Gyr (DPS) [ ");
-  printFormattedFloat(ICM20948_t.gyr_xout, 5, 2);
-  SERIAL_PORT.print(", ");
-  printFormattedFloat(ICM20948_t.gyr_yout, 5, 2);
-  SERIAL_PORT.print(", ");
-  printFormattedFloat(ICM20948_t.gyr_zout, 5, 2);
-  SERIAL_PORT.print(" ], Mag (uT) [ ");
-  printFormattedFloat(ICM20948_t.mag_xout, 5, 2);
-  SERIAL_PORT.print(", ");
-  printFormattedFloat(ICM20948_t.mag_yout, 5, 2);
-  SERIAL_PORT.print(", ");
-  printFormattedFloat(ICM20948_t.mag_zout, 5, 2);
-  SERIAL_PORT.print(" ], Tmp (C) [ ");
-  printFormattedFloat(ICM20948_t.tmp_out, 5, 2);
-  SERIAL_PORT.print(" ]");
-  SERIAL_PORT.println();
-    
-    delay(30);
+    Serial.print(F("Time Stamp = "));
+    Serial.print(ICM20948_t.timeStamp);
+    Serial.println(" ms");
+
+    Serial.print(F("AccelX = "));
+    Serial.print(ICM20948_t.accel_xout);
+    Serial.println("");
+
+    Serial.print(F("AccelY = "));
+    Serial.print(ICM20948_t.accel_yout);
+    Serial.println("");
+
+    Serial.print(F("AccelZ = "));
+    Serial.print(ICM20948_t.accel_zout);
+    Serial.println("");
+
+    Serial.print(F("GyrX = "));
+    Serial.print(ICM20948_t.gyr_xout);
+    Serial.println("");
+
+    Serial.print(F("GyrY = "));
+    Serial.print(ICM20948_t.gyr_yout);
+    Serial.println("");
+
+    Serial.print(F("GyrZ = "));
+    Serial.print(ICM20948_t.gyr_zout);
+    Serial.println("");
+
+    Serial.print(F("MagX = "));
+    Serial.print(ICM20948_t.mag_xout);
+    Serial.println("");
+
+    Serial.print(F("MagY = "));
+    Serial.print(ICM20948_t.mag_yout);
+    Serial.println("");
+
+    Serial.print(F("MagZ = "));
+    Serial.print(ICM20948_t.mag_zout);
+    Serial.println("");
+
+    Serial.print(F("Temp = "));
+    Serial.print(ICM20948_t.tmp_out);
+    Serial.println("");
   }
-  else
-  {
-    SERIAL_PORT.println("Waiting for data");
-    delay(500);
-  }
+  
   // Write SD
 
   // Write Nand
-}
-
-// ---------------------------------------------------------------------------------------------------------------- //
-void printFormattedFloat(float val, uint8_t leading, uint8_t decimals)
-{
-  float aval = abs(val);
-  if (val < 0)
-  {
-    SERIAL_PORT.print("-");
-  }
-  else
-  {
-    SERIAL_PORT.print(" ");
-  }
-  for (uint8_t indi = 0; indi < leading; indi++)
-  {
-    uint32_t tenpow = 0;
-    if (indi < (leading - 1))
-    {
-      tenpow = 1;
-    }
-    for (uint8_t c = 0; c < (leading - 1 - indi); c++)
-    {
-      tenpow *= 10;
-    }
-    if (aval < tenpow)
-    {
-      SERIAL_PORT.print("0");
-    }
-    else
-    {
-      break;
-    }
-  }
-  if (val < 0)
-  {
-    SERIAL_PORT.print(-val, decimals);
-  }
-  else
-  {
-    SERIAL_PORT.print(val, decimals);
-  }
 }
