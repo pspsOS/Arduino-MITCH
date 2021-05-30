@@ -9,27 +9,23 @@
 
 // ---------------------------------------------------------------------------------------------------------------- //
 // GPS def
-#define MAX_NMEA (80)
+#define MAX_NMEA (82)
 // BMP def
 // IMU def
 //#define USE_SPI       // Uncomment this to use SPI
 #define SERIAL_PORT Serial
 #define SPI_PORT SPI     // Your desired SPI port.       Used only when "USE_SPI" is defined
 #define SPI_FREQ 5000000 // You can override the default SPI frequency
-#define CS_PIN 10         // Which pin you connect CS to. Used only when "USE_SPI" is defined
+#define cardSelect 10         // Which pin you connect CS to. Used only when "USE_SPI" is defined
 #define WIRE_PORT Wire1 // Your desired Wire port.      Used when "USE_SPI" is not defined
 #define AD0_VAL 1      // The value of the last bit of the I2C address.                \
                        // On the SparkFun 9DoF IMU breakout the default is 1, and when \
                        // the ADR jumper is closed the value becomes 0
-#define redLED 3 // optional red status indication LED, could be a buzzer etc
 // SD def
 // Nand def
 
 // ---------------------------------------------------------------------------------------------------------------- //
 // GPS handle
-SoftwareSerial mySerial(0, 1);
-// Connect the GPS TX (transmit) pin to Digital 8
-// Connect the GPS RX (receive) pin to Digital 7
 TinyGPS gps;
 #define gpsPort Serial1
 // BMP handle
@@ -42,15 +38,17 @@ ICM_20948_SPI myICM; // If using SPI create an ICM_20948_SPI object
 ICM_20948_I2C myICM; // Otherwise create an ICM_20948_I2C object
 #endif
 // SD handle
-//File logfile;
-//char filename[20] = { '\0' };
+File logfile;
+char filename[20] = { '\0' };
+File textfile;
+char textname[20] = { '\0' };
 // Nand handle
 
 // ---------------------------------------------------------------------------------------------------------------- //
 // GPS Struct
 typedef struct gpsData {
   uint32_t timeStamp;
-  char packets;
+  char packets[MAX_NMEA];
 };
 struct gpsData gpsData_t;
 // BMP Struct
@@ -81,7 +79,6 @@ void setup()
 {
   // GPS Setup
   Serial.begin(9600); //for debugging purposes
-  while(!Serial);
   gpsPort.begin(9600);
   Serial.println("GPS Setup Complete");
   
@@ -231,24 +228,48 @@ void setup()
   SERIAL_PORT.println(F("Configuration complete!"));
   
   // SD Setup
-//  strncpy(filename, "/FLIGHT00.csv", 13);
-//  for (uint8_t i = 0; i < 100; i++) {
-//    filename[7] = '0' + i/10;
-//    filename[8] = '0' + i%10;
-//    if (! SD.exists(filename)) {
-//      break;
-//    }
-//  }
-//
-//  // attempt to open the file, restart otherwise
-//  logfile = SD.open(filename, FILE_WRITE);
-//  if(!logfile) {
-//    digitalWrite(redLED, HIGH);
-//    return;
-//  }
-//  // write data schema on top line of file
-//  logfile.println("GPS_str,BMP_temp,BMP_press,BMP_alt,IMU_xaccel,IMU_yaccel,IMU_zaccel,IMU_xgyro,IMU_ygyro,IMU_zgyro,IMU_xmag,IMU_ymag,IMU_zmag,IMU_temp");
-//  logfile.close();
+  if (!SD.begin(cardSelect)) {
+    // if not, set status LED and return
+    // the script *should* start over because an arduino can only
+    // really 'exit' by going into an infinite while loop
+    return;
+  }
+  
+  strncpy(filename, "/FLIGHT00.csv", 13);
+  for (uint8_t i = 0; i < 100; i++) {
+    filename[7] = '0' + i/10;
+    filename[8] = '0' + i%10;
+    if (! SD.exists(filename)) {
+      break;
+    }
+  }
+
+  strncpy(textname, "/FLIGHT00.txt", 13);
+  for (uint8_t i = 0; i < 100; i++) {
+    textname[7] = '0' + i/10;
+    textname[8] = '0' + i%10;
+    if (! SD.exists(textname)) {
+      break;
+    }
+  }
+
+  // attempt to open the file, restart otherwise
+  logfile = SD.open(filename, FILE_WRITE);
+  if(!logfile) {
+    return;
+  }
+  // write data schema on top line of file
+  logfile.println("BMP_temp,BMP_press,BMP_time,IMU_xaccel,IMU_yaccel,IMU_zaccel,IMU_xgyro,IMU_ygyro,IMU_zgyro,IMU_xmag,IMU_ymag,IMU_zmag,IMU_temp,IMU_time");
+  logfile.close();
+
+  // attempt to open the file, restart otherwise
+  textfile = SD.open(textname, FILE_WRITE);
+  if(!textfile) {
+    return;
+  }
+  // write data schema on top line of file
+  textfile.println("GPS_Packets\n");
+  textfile.close();
   
   // Nand Setup
 }
@@ -258,12 +279,20 @@ void loop()
 { 
   // GPS loop
   gpsData_t.timeStamp = (millis() - timeStartup);
-  char c;
-  if (gpsPort.available()) {
-      gpsData_t.packets = gpsPort.read();
-      c = gpsPort.read();
+  unsigned long chars;
+  unsigned short sentences, failed;
+  int n = 1;
+  gpsData_t.packets[0] = '"';
+  // For one second we parse GPS data and report some key values
+  for (unsigned long start = millis(); millis() - start < 1000;) {
+    while (gpsPort.available()) {
+      char c = gpsPort.read();
+      gpsData_t.packets[n] = c;
+      n+=1;
+      //Serial.write(c); // uncomment this line if you want to see the GPS data flowing
+    }
   }
-  Serial.write(c);
+  gpsData_t.packets[n] = '"';
 
     Serial.print(F("Time Stamp = "));
     Serial.print(gpsData_t.timeStamp);
@@ -283,11 +312,11 @@ void loop()
     Serial.println(" ms");
     
     Serial.print(F("Temperature = "));
-    Serial.print(bmpData_t.raw_tFine);
+    Serial.print((float)((bmpData_t.raw_tFine * 5 + 128) >> 8)/100);
     Serial.println(" *C");
 
     Serial.print(F("Pressure = "));
-    Serial.print(int(bmpData_t.raw_p));
+    Serial.print((float)(bmpData_t.raw_p)/256);
     Serial.println(" Pa");
 
     Serial.println();
@@ -366,6 +395,53 @@ void loop()
   }
   
   // Write SD
-
+//  for(int i=0;i<MAX_NMEA;i++){
+//    if(gpsData_t.packets[i] = "\'" && gpsData_t.packets[i+1] = "n"){
+//      gpsData_t.packets[i] = " ";
+//      gpsData_t.packets[i+1] = " "
+//    }
+//  }
+  textfile = SD.open(textname, FILE_WRITE);
+  textfile.print("TimeStamp = ");
+  textfile.print(gpsData_t.timeStamp);
+  textfile.print("\n");
+  textfile.print(gpsData_t.packets);
+  textfile.print("\n-------------------------------------------------------------------------------------------------\n");
+  textfile.close();
+  logfile = SD.open(filename, FILE_WRITE);
+  logfile.print((float)((bmpData_t.raw_tFine * 5 + 128) >> 8)/100);
+  logfile.print(",");
+  logfile.print((float)(bmpData_t.raw_p)/256);
+  logfile.print(",");
+  logfile.print(bmpData_t.timeStamp);
+  logfile.print(",");
+  logfile.print(ICM20948_t.accel_xout);
+  logfile.print(",");
+  logfile.print(ICM20948_t.accel_yout);
+  logfile.print(",");
+  logfile.print(ICM20948_t.accel_zout);
+  logfile.print(",");
+  logfile.print(ICM20948_t.gyr_xout);
+  logfile.print(",");
+  logfile.print(ICM20948_t.gyr_yout);
+  logfile.print(",");
+  logfile.print(ICM20948_t.gyr_zout);
+  logfile.print(",");
+  logfile.print(ICM20948_t.mag_xout);
+  logfile.print(",");
+  logfile.print(ICM20948_t.mag_yout);
+  logfile.print(",");
+  logfile.print(ICM20948_t.mag_zout);
+  logfile.print(",");
+  logfile.print(ICM20948_t.tmp_out);
+  logfile.print(",");
+  logfile.print(ICM20948_t.timeStamp);
+  logfile.print(", \n");
+  logfile.close();
   // Write Nand
+
+  // Clear GPS
+  for(int i=0;i<MAX_NMEA;i++){
+    gpsData_t.packets[i] = (char)0;
+  }
 }
