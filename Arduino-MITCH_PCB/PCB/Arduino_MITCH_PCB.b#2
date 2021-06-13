@@ -947,10 +947,11 @@ design rules under a new name.</description>
 <signal name="CS2">
 <contactref element="IC1" pad="1"/>
 <wire x1="10.25" y1="80.645" x2="10.25" y2="77.81625" width="0.635" layer="1"/>
-<wire x1="10.25" y1="77.81625" x2="11.3665" y2="76.69975" width="0.635" layer="1"/>
-<wire x1="11.3665" y1="76.69975" x2="11.3665" y2="49.4665" width="0.635" layer="1"/>
+<wire x1="10.25" y1="77.81625" x2="11.013125" y2="77.053125" width="0.635" layer="1"/>
 <contactref element="U$1" pad="9/CS"/>
-<wire x1="11.3665" y1="49.4665" x2="10.16" y2="50.8" width="0" layer="19" extent="1-1"/>
+<wire x1="11.013125" y1="77.053125" x2="11.3665" y2="76.69975" width="0.635" layer="1"/>
+<wire x1="11.3665" y1="76.69975" x2="11.3665" y2="52.0065" width="0.635" layer="1"/>
+<wire x1="11.3665" y1="52.0065" x2="10.16" y2="50.8" width="0.635" layer="1"/>
 </signal>
 <signal name="TX1">
 <contactref element="U$1" pad="0/RX"/>
