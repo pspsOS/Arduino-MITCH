@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="mil" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -165,11 +165,10 @@
 <wire x1="63.48" y1="0" x2="63.5" y2="127" width="0" layer="20"/>
 <wire x1="63.5" y1="127" x2="0" y2="127" width="0" layer="20"/>
 <wire x1="0" y1="127" x2="0" y2="0" width="0" layer="20"/>
-<hole x="5.08" y="5.08" drill="0.002259375"/>
-<hole x="58.42" y="5.08" drill="0.002259375"/>
-<hole x="5.08" y="121.92" drill="0.002259375"/>
-<hole x="58.42" y="121.92" drill="0.002259375"/>
-<text x="33.02" y="119.38" size="5.08" layer="25">MITCH</text>
+<hole x="5.08" y="121.92" drill="5.1054"/>
+<hole x="58.42" y="121.92" drill="5.1054"/>
+<hole x="58.42" y="5.08" drill="5.1054"/>
+<hole x="5.08" y="5.08" drill="5.1054"/>
 </plain>
 <libraries>
 <library name="Arduino-MITCH_Breakouts">
@@ -593,72 +592,6 @@
 </package>
 </packages>
 </library>
-<library name="led" urn="urn:adsk.eagle:library:259">
-<description>&lt;b&gt;LEDs&lt;/b&gt;&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;&lt;br&gt;
-Extended by Federico Battaglin &lt;author&gt;&amp;lt;federico.rd@fdpinternational.com&amp;gt;&lt;/author&gt; with DUOLED</description>
-<packages>
-<package name="LED5MM" urn="urn:adsk.eagle:footprint:15655/1" library_version="5">
-<description>&lt;B&gt;LED&lt;/B&gt;&lt;p&gt;
-5 mm, round</description>
-<wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.2032" layer="21"/>
-<wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.254" layer="21" curve="-286.260205"/>
-<wire x1="-1.143" y1="0" x2="0" y2="1.143" width="0.1524" layer="51" curve="-90"/>
-<wire x1="0" y1="-1.143" x2="1.143" y2="0" width="0.1524" layer="51" curve="90"/>
-<wire x1="-1.651" y1="0" x2="0" y2="1.651" width="0.1524" layer="51" curve="-90"/>
-<wire x1="0" y1="-1.651" x2="1.651" y2="0" width="0.1524" layer="51" curve="90"/>
-<wire x1="-2.159" y1="0" x2="0" y2="2.159" width="0.1524" layer="51" curve="-90"/>
-<wire x1="0" y1="-2.159" x2="2.159" y2="0" width="0.1524" layer="51" curve="90"/>
-<circle x="0" y="0" radius="2.54" width="0.1524" layer="21"/>
-<pad name="A" x="-1.27" y="0" drill="0.8128" shape="octagon"/>
-<pad name="K" x="1.27" y="0" drill="0.8128" shape="octagon"/>
-<text x="3.175" y="0.5334" size="1.27" layer="25" ratio="10">&gt;NAME</text>
-<text x="3.2004" y="-1.8034" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
-</package>
-</packages>
-<packages3d>
-<package3d name="LED5MM" urn="urn:adsk.eagle:package:15799/2" type="model" library_version="5">
-<description>LED
-5 mm, round</description>
-<packageinstances>
-<packageinstance name="LED5MM"/>
-</packageinstances>
-</package3d>
-</packages3d>
-</library>
-<library name="resistor-power" urn="urn:adsk.eagle:library:344">
-<description>&lt;b&gt;Vitrohm Power Resistors&lt;/b&gt;&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
-<packages>
-<package name="HPS58" urn="urn:adsk.eagle:footprint:25063/1" library_version="2">
-<description>&lt;b&gt;High Ohmic Value (up to 1.5 G?), High Power Resistors&lt;/b&gt;&lt;p&gt;
-(up to 10 W at 25 °C) Thick Film Technology&lt;br&gt;
-Source: Vishay Dale .. hps.pdf</description>
-<wire x1="-3.18" y1="-1.125" x2="3.18" y2="-1.125" width="0.1524" layer="21"/>
-<wire x1="3.18" y1="1.125" x2="-3.18" y2="1.125" width="0.1524" layer="21"/>
-<wire x1="-3.18" y1="1.125" x2="-3.18" y2="-1.125" width="0.1524" layer="21"/>
-<wire x1="3.18" y1="-1.125" x2="3.18" y2="1.125" width="0.1524" layer="21"/>
-<wire x1="-5.08" y1="0" x2="-3.81" y2="0" width="0.6" layer="51"/>
-<wire x1="3.81" y1="0" x2="5.08" y2="0" width="0.6" layer="51"/>
-<pad name="1" x="-5.08" y="0" drill="0.9" diameter="1.5"/>
-<pad name="2" x="5.08" y="0" drill="0.9" diameter="1.5"/>
-<text x="-3.175" y="1.27" size="1.778" layer="25" ratio="10">&gt;NAME</text>
-<text x="-2.845" y="-0.835" size="1.778" layer="27" ratio="10">&gt;VALUE</text>
-<rectangle x1="-3.81" y1="-0.3" x2="-3.255" y2="0.3" layer="21"/>
-<rectangle x1="3.255" y1="-0.3" x2="3.81" y2="0.3" layer="21"/>
-</package>
-</packages>
-<packages3d>
-<package3d name="HPS58" urn="urn:adsk.eagle:package:25160/1" type="box" library_version="2">
-<description>High Ohmic Value (up to 1.5 G?), High Power Resistors
-(up to 10 W at 25 °C) Thick Film Technology
-Source: Vishay Dale .. hps.pdf</description>
-<packageinstances>
-<packageinstance name="HPS58"/>
-</packageinstances>
-</package3d>
-</packages3d>
-</library>
 </libraries>
 <attributes>
 </attributes>
@@ -883,19 +816,8 @@ design rules under a new name.</description>
 <attribute name="MANUFACTURER_PART_NUMBER" value="PS1240P02BT" x="18.288" y="113.03" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MOUSER_PART_NUMBER" value="810-PS1240P02BT" x="18.288" y="113.03" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MOUSER_PRICE-STOCK" value="https://www.mouser.co.uk/ProductDetail/TDK/PS1240P02BT?qs=d7g9p1yFhWaZXSY9MjKMkw%3D%3D" x="18.288" y="113.03" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="VALUE" x="18.844" y="109.791" size="1.27" layer="27" align="center"/>
-</element>
-<element name="LED1" library="led" library_urn="urn:adsk.eagle:library:259" package="LED5MM" package3d_urn="urn:adsk.eagle:package:15799/2" value="RED" x="12.7" y="5.08" smashed="yes">
-<attribute name="POPULARITY" value="93" x="12.7" y="5.08" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="15.9004" y="5.8166" size="1.27" layer="27" ratio="10"/>
-</element>
-<element name="R1" library="resistor-power" library_urn="urn:adsk.eagle:library:344" package="HPS58" package3d_urn="urn:adsk.eagle:package:25160/1" value="560" x="27.94" y="5.08" smashed="yes">
-<attribute name="MF" value="" x="27.94" y="5.08" size="1.778" layer="27" display="off"/>
-<attribute name="MPN" value="" x="27.94" y="5.08" size="1.778" layer="27" display="off"/>
-<attribute name="OC_FARNELL" value="unknown" x="27.94" y="5.08" size="1.778" layer="27" display="off"/>
-<attribute name="OC_NEWARK" value="unknown" x="27.94" y="5.08" size="1.778" layer="27" display="off"/>
-<attribute name="POPULARITY" value="0" x="27.94" y="5.08" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="25.095" y="4.245" size="1.778" layer="27" ratio="10"/>
+<attribute name="NAME" x="13.271" y="113.236" size="1.27" layer="25" rot="R270" align="center"/>
+<attribute name="VALUE" x="23.431" y="113.236" size="1.27" layer="27" rot="R270" align="center"/>
 </element>
 </elements>
 <signals>
@@ -968,9 +890,6 @@ design rules under a new name.</description>
 <contactref element="LS1" pad="2"/>
 <wire x1="6.275" y1="97.663" x2="15.788" y2="107.176" width="0.635" layer="16"/>
 <wire x1="15.788" y1="107.176" x2="15.788" y2="113.03" width="0.635" layer="16"/>
-<contactref element="R1" pad="2"/>
-<wire x1="33.02" y1="5.08" x2="33.02" y2="22.987" width="0.635" layer="1"/>
-<wire x1="33.02" y1="22.987" x2="30.48" y2="25.527" width="0.635" layer="1"/>
 </signal>
 <signal name="BAT_VIN">
 <contactref element="J1" pad="1"/>
@@ -1180,20 +1099,6 @@ design rules under a new name.</description>
 <wire x1="13.8501" y1="78.09675" x2="11.95335" y2="76.2" width="0.635" layer="16"/>
 <wire x1="11.95335" y1="76.2" x2="10.16" y2="76.2" width="0.635" layer="16"/>
 </signal>
-<signal name="LED-RES">
-<contactref element="LED1" pad="K"/>
-<contactref element="R1" pad="1"/>
-<wire x1="13.97" y1="5.08" x2="22.86" y2="5.08" width="0.635" layer="1"/>
-</signal>
-<signal name="LED">
-<contactref element="LED1" pad="A"/>
-<contactref element="U$1" pad="14/A0"/>
-<wire x1="25.4" y1="53.34" x2="28.7881" y2="49.9519" width="0.635" layer="1"/>
-<wire x1="28.7881" y1="49.9519" x2="28.7881" y2="27.94" width="0.635" layer="1"/>
-<via x="28.7881" y="27.94" extent="1-16" drill="0.35"/>
-<wire x1="28.7881" y1="27.94" x2="11.43" y2="10.5819" width="0.635" layer="16"/>
-<wire x1="11.43" y1="10.5819" x2="11.43" y2="5.08" width="0.635" layer="16"/>
-</signal>
 </signals>
 <mfgpreviewcolors>
 <mfgpreviewcolor name="soldermaskcolor" color="0xC8008000"/>
@@ -1208,21 +1113,6 @@ design rules under a new name.</description>
 <note version="6.3" minversion="6.2.2" severity="warning">
 Since Version 6.2.2 text objects can contain more than one line,
 which will not be processed correctly with this version.
-</note>
-<note version="8.2" severity="warning">
-Since Version 8.2, EAGLE supports online libraries. The ids
-of those online libraries will not be understood (or retained)
-with this version.
-</note>
-<note version="8.3" severity="warning">
-Since Version 8.3, EAGLE supports URNs for individual library
-assets (packages, symbols, and devices). The URNs of those assets
-will not be understood (or retained) with this version.
-</note>
-<note version="8.3" severity="warning">
-Since Version 8.3, EAGLE supports the association of 3D packages
-with devices in libraries, schematics, and board files. Those 3D
-packages will not be understood (or retained) with this version.
 </note>
 </compatibility>
 </eagle>

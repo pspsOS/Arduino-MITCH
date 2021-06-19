@@ -1073,7 +1073,7 @@ Source: &lt;a href=""&gt; Datasheet &lt;/a&gt;</description>
 <parts>
 <part name="U$1" library="Arduino-MITCH_Breakouts" deviceset="TEENSY_4.0-BASIC" device=""/>
 <part name="U$2" library="Arduino-MITCH_Breakouts" deviceset="ULTIMATE_GPS" device=""/>
-<part name="IC1" library="Arduino-MITCH_Breakouts" deviceset="TC58CVG2S0HRAIJ" device=""/>
+<part name="FLASH" library="Arduino-MITCH_Breakouts" deviceset="TC58CVG2S0HRAIJ" device=""/>
 <part name="U$3" library="Arduino-MITCH_Breakouts" deviceset="SPARKFUN-BATTERY-BABYSITTER" device=""/>
 <part name="U$4" library="Arduino-MITCH_Breakouts" deviceset="MINIBOOST5V" device=""/>
 <part name="U$5" library="Arduino-MITCH_Breakouts" deviceset="MICROSDCARDWRITER" device=""/>
@@ -1106,7 +1106,7 @@ Source: &lt;a href=""&gt; Datasheet &lt;/a&gt;</description>
 <attribute name="NAME" x="86.36" y="127" size="2.54" layer="95"/>
 <attribute name="VALUE" x="86.36" y="121.92" size="2.54" layer="96"/>
 </instance>
-<instance part="IC1" gate="G$1" x="50.8" y="-22.86" smashed="yes">
+<instance part="FLASH" gate="G$1" x="50.8" y="-22.86" smashed="yes">
 <attribute name="NAME" x="87.63" y="-15.24" size="1.778" layer="95" align="center-left"/>
 <attribute name="VALUE" x="87.63" y="-17.78" size="1.778" layer="96" align="center-left"/>
 </instance>
@@ -1270,7 +1270,7 @@ Source: &lt;a href=""&gt; Datasheet &lt;/a&gt;</description>
 <pinref part="GND13" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="VSS"/>
+<pinref part="FLASH" gate="G$1" pin="VSS"/>
 <wire x1="91.44" y1="-22.86" x2="116.84" y2="-22.86" width="0.1524" layer="91"/>
 <wire x1="116.84" y1="-22.86" x2="116.84" y2="-25.4" width="0.1524" layer="91"/>
 <pinref part="GND14" gate="1" pin="GND"/>
@@ -1333,7 +1333,7 @@ Source: &lt;a href=""&gt; Datasheet &lt;/a&gt;</description>
 <label x="48.26" y="40.64" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="VCC"/>
+<pinref part="FLASH" gate="G$1" pin="VCC"/>
 <wire x1="91.44" y1="-25.4" x2="104.14" y2="-25.4" width="0.1524" layer="91"/>
 <label x="104.14" y="-25.4" size="1.778" layer="95" xref="yes"/>
 </segment>
@@ -1398,7 +1398,7 @@ Source: &lt;a href=""&gt; Datasheet &lt;/a&gt;</description>
 <label x="175.26" y="33.02" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="SCK"/>
+<pinref part="FLASH" gate="G$1" pin="SCK"/>
 <wire x1="91.44" y1="-27.94" x2="96.52" y2="-27.94" width="0.1524" layer="91"/>
 <label x="96.52" y="-27.94" size="1.778" layer="95" xref="yes"/>
 </segment>
@@ -1415,7 +1415,7 @@ Source: &lt;a href=""&gt; Datasheet &lt;/a&gt;</description>
 <label x="175.26" y="38.1" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="SO/IO1"/>
+<pinref part="FLASH" gate="G$1" pin="SO/IO1"/>
 <wire x1="50.8" y1="-25.4" x2="38.1" y2="-25.4" width="0.1524" layer="91"/>
 <label x="38.1" y="-25.4" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
@@ -1432,14 +1432,14 @@ Source: &lt;a href=""&gt; Datasheet &lt;/a&gt;</description>
 <label x="175.26" y="43.18" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="SI/IO0"/>
+<pinref part="FLASH" gate="G$1" pin="SI/IO0"/>
 <wire x1="50.8" y1="-30.48" x2="45.72" y2="-30.48" width="0.1524" layer="91"/>
 <label x="45.72" y="-30.48" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="CS2" class="0">
 <segment>
-<pinref part="IC1" gate="G$1" pin="!CS"/>
+<pinref part="FLASH" gate="G$1" pin="!CS"/>
 <wire x1="50.8" y1="-22.86" x2="45.72" y2="-22.86" width="0.1524" layer="91"/>
 <label x="45.72" y="-22.86" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
