@@ -165,10 +165,10 @@
 <wire x1="63.48" y1="0" x2="63.5" y2="127" width="0" layer="20"/>
 <wire x1="63.5" y1="127" x2="0" y2="127" width="0" layer="20"/>
 <wire x1="0" y1="127" x2="0" y2="0" width="0" layer="20"/>
-<hole x="5.08" y="121.92" drill="5.1054"/>
-<hole x="58.42" y="121.92" drill="5.1054"/>
-<hole x="58.42" y="5.08" drill="5.1054"/>
-<hole x="5.08" y="5.08" drill="5.1054"/>
+<hole x="5.08" y="5.08" drill="0.002259375"/>
+<hole x="58.42" y="5.08" drill="0.002259375"/>
+<hole x="5.08" y="121.92" drill="0.002259375"/>
+<hole x="58.42" y="121.92" drill="0.002259375"/>
 </plain>
 <libraries>
 <library name="Arduino-MITCH_Breakouts">

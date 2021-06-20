@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="1" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -51,7 +51,7 @@
 <layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
 <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
-<layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
+<layer number="44" name="Drills" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
@@ -165,10 +165,6 @@
 <wire x1="63.48" y1="0" x2="63.5" y2="127" width="0" layer="20"/>
 <wire x1="63.5" y1="127" x2="0" y2="127" width="0" layer="20"/>
 <wire x1="0" y1="127" x2="0" y2="0" width="0" layer="20"/>
-<hole x="5.08" y="5.08" drill="0.002259375"/>
-<hole x="58.42" y="5.08" drill="0.002259375"/>
-<hole x="5.08" y="121.92" drill="0.002259375"/>
-<hole x="58.42" y="121.92" drill="0.002259375"/>
 <text x="33.02" y="119.38" size="5.08" layer="25">MITCH</text>
 <rectangle x1="4.7879" y1="110.1725" x2="4.8133" y2="110.1979" layer="200"/>
 <rectangle x1="4.7879" y1="110.1979" x2="4.8133" y2="110.2233" layer="200"/>
@@ -1923,6 +1919,10 @@
 <rectangle x1="14.8209" y1="124.3203" x2="15.0241" y2="124.3457" layer="200"/>
 <rectangle x1="14.8717" y1="124.3457" x2="14.9987" y2="124.3711" layer="200"/>
 <rectangle x1="14.8971" y1="124.3711" x2="14.9733" y2="124.3965" layer="200"/>
+<hole x="58.42" y="5.08" drill="2.2606"/>
+<hole x="5.08" y="121.92" drill="2.2606"/>
+<hole x="58.42" y="121.92" drill="2.2606"/>
+<hole x="5.08" y="5.08" drill="2.2606"/>
 </plain>
 <libraries>
 <library name="Arduino-MITCH_Breakouts">

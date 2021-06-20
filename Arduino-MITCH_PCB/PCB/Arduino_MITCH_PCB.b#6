@@ -169,6 +169,7 @@
 <hole x="58.42" y="5.08" drill="0.002259375"/>
 <hole x="5.08" y="121.92" drill="0.002259375"/>
 <hole x="58.42" y="121.92" drill="0.002259375"/>
+<text x="33.02" y="119.38" size="5.08" layer="25">MITCH</text>
 </plain>
 <libraries>
 <library name="Arduino-MITCH_Breakouts">
