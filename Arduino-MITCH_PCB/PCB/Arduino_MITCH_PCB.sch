@@ -632,12 +632,12 @@
 <pin name="!CS" x="0" y="0" length="middle"/>
 <pin name="SO/IO1" x="0" y="-2.54" length="middle"/>
 <pin name="!WP!/IO2" x="0" y="-5.08" length="middle"/>
-<pin name="SI/IO0" x="0" y="-7.62" length="middle"/>
+<pin name="VSS" x="0" y="-7.62" length="middle"/>
 <pin name="EP" x="20.32" y="-20.32" length="middle" rot="R90"/>
-<pin name="VSS" x="40.64" y="0" length="middle" rot="R180"/>
-<pin name="VCC" x="40.64" y="-2.54" length="middle" rot="R180"/>
+<pin name="VCC" x="40.64" y="0" length="middle" rot="R180"/>
+<pin name="HOLD/IO3" x="40.64" y="-2.54" length="middle" rot="R180"/>
 <pin name="SCK" x="40.64" y="-5.08" length="middle" rot="R180"/>
-<pin name="!HOLD!/IO3" x="40.64" y="-7.62" length="middle" rot="R180"/>
+<pin name="SI/IO0" x="40.64" y="-7.62" length="middle" rot="R180"/>
 </symbol>
 <symbol name="SPARKFUN-BATTERY-BABYSITTER">
 <wire x1="-20.32" y1="17.78" x2="-20.32" y2="-17.78" width="0.254" layer="94"/>
@@ -812,14 +812,14 @@ Source: &lt;a href="https://business.kioxia.com/en-us/memory/detail.TC58CVG2S0HR
 <device name="" package="SON127P800X600X80-9N">
 <connects>
 <connect gate="G$1" pin="!CS" pad="1"/>
-<connect gate="G$1" pin="!HOLD!/IO3" pad="5"/>
 <connect gate="G$1" pin="!WP!/IO2" pad="3"/>
 <connect gate="G$1" pin="EP" pad="9"/>
+<connect gate="G$1" pin="HOLD/IO3" pad="7"/>
 <connect gate="G$1" pin="SCK" pad="6"/>
-<connect gate="G$1" pin="SI/IO0" pad="4"/>
+<connect gate="G$1" pin="SI/IO0" pad="5"/>
 <connect gate="G$1" pin="SO/IO1" pad="2"/>
-<connect gate="G$1" pin="VCC" pad="7"/>
-<connect gate="G$1" pin="VSS" pad="8"/>
+<connect gate="G$1" pin="VCC" pad="8"/>
+<connect gate="G$1" pin="VSS" pad="4"/>
 </connects>
 <technologies>
 <technology name="">
@@ -7079,7 +7079,9 @@ Source: www.vishay.com .. rwm.pdf</description>
 <part name="GND14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="LS1" library="SamacSys_Parts" deviceset="PS1240P02BT" device=""/>
 <part name="LED1" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:15799/2" value="RED"/>
-<part name="R1" library="resistor-power" library_urn="urn:adsk.eagle:library:344" deviceset="R" device="HPS58" package3d_urn="urn:adsk.eagle:package:25160/1" value="560"/>
+<part name="R1" library="resistor-power" library_urn="urn:adsk.eagle:library:344" deviceset="R" device="HPS58" package3d_urn="urn:adsk.eagle:package:25160/1" value="220"/>
+<part name="GND15" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="R2" library="resistor-power" library_urn="urn:adsk.eagle:library:344" deviceset="R" device="HPS58" package3d_urn="urn:adsk.eagle:package:25160/1" value="220"/>
 </parts>
 <sheets>
 <sheet>
@@ -7158,8 +7160,8 @@ Source: www.vishay.com .. rwm.pdf</description>
 <instance part="GND13" gate="1" x="101.6" y="10.16" smashed="yes">
 <attribute name="VALUE" x="99.06" y="7.62" size="1.778" layer="96"/>
 </instance>
-<instance part="GND14" gate="1" x="116.84" y="-27.94" smashed="yes">
-<attribute name="VALUE" x="114.3" y="-30.48" size="1.778" layer="96"/>
+<instance part="GND14" gate="1" x="45.72" y="-35.56" smashed="yes">
+<attribute name="VALUE" x="43.18" y="-38.1" size="1.778" layer="96"/>
 </instance>
 <instance part="LS1" gate="G$1" x="-68.58" y="25.4" smashed="yes">
 <attribute name="NAME" x="-52.07" y="33.02" size="1.778" layer="95" align="center-left"/>
@@ -7172,6 +7174,13 @@ Source: www.vishay.com .. rwm.pdf</description>
 <instance part="R1" gate="G$1" x="-45.72" y="-5.08" smashed="yes">
 <attribute name="NAME" x="-49.53" y="-3.7084" size="1.778" layer="95"/>
 <attribute name="VALUE" x="-49.53" y="-8.001" size="1.778" layer="96"/>
+</instance>
+<instance part="GND15" gate="1" x="71.12" y="-48.26" smashed="yes">
+<attribute name="VALUE" x="68.58" y="-50.8" size="1.778" layer="96"/>
+</instance>
+<instance part="R2" gate="G$1" x="-58.42" y="15.24" smashed="yes">
+<attribute name="NAME" x="-62.23" y="16.6116" size="1.778" layer="95"/>
+<attribute name="VALUE" x="-62.23" y="12.319" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -7264,19 +7273,24 @@ Source: www.vishay.com .. rwm.pdf</description>
 </segment>
 <segment>
 <pinref part="FLASH" gate="G$1" pin="VSS"/>
-<wire x1="91.44" y1="-22.86" x2="116.84" y2="-22.86" width="0.1524" layer="91"/>
-<wire x1="116.84" y1="-22.86" x2="116.84" y2="-25.4" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="-30.48" x2="45.72" y2="-30.48" width="0.1524" layer="91"/>
+<wire x1="45.72" y1="-30.48" x2="45.72" y2="-33.02" width="0.1524" layer="91"/>
 <pinref part="GND14" gate="1" pin="GND"/>
-</segment>
-<segment>
-<pinref part="LS1" gate="G$1" pin="2"/>
-<wire x1="-68.58" y1="22.86" x2="-73.66" y2="22.86" width="0.1524" layer="91"/>
-<label x="-73.66" y="22.86" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="R1" gate="G$1" pin="2"/>
 <wire x1="-40.64" y1="-5.08" x2="-35.56" y2="-5.08" width="0.1524" layer="91"/>
 <label x="-35.56" y="-5.08" size="1.778" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="FLASH" gate="G$1" pin="EP"/>
+<wire x1="71.12" y1="-43.18" x2="71.12" y2="-45.72" width="0.1524" layer="91"/>
+<pinref part="GND15" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="R2" gate="G$1" pin="2"/>
+<wire x1="-53.34" y1="15.24" x2="-48.26" y2="15.24" width="0.1524" layer="91"/>
+<label x="-48.26" y="15.24" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="BAT_VIN" class="0">
@@ -7332,8 +7346,8 @@ Source: www.vishay.com .. rwm.pdf</description>
 </segment>
 <segment>
 <pinref part="FLASH" gate="G$1" pin="VCC"/>
-<wire x1="91.44" y1="-25.4" x2="104.14" y2="-25.4" width="0.1524" layer="91"/>
-<label x="104.14" y="-25.4" size="1.778" layer="95" xref="yes"/>
+<wire x1="91.44" y1="-22.86" x2="96.52" y2="-22.86" width="0.1524" layer="91"/>
+<label x="96.52" y="-22.86" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="SCL0" class="0">
@@ -7431,8 +7445,8 @@ Source: www.vishay.com .. rwm.pdf</description>
 </segment>
 <segment>
 <pinref part="FLASH" gate="G$1" pin="SI/IO0"/>
-<wire x1="50.8" y1="-30.48" x2="45.72" y2="-30.48" width="0.1524" layer="91"/>
-<label x="45.72" y="-30.48" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="91.44" y1="-30.48" x2="104.14" y2="-30.48" width="0.1524" layer="91"/>
+<label x="104.14" y="-30.48" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="CS2" class="0">
@@ -7486,8 +7500,8 @@ Source: www.vishay.com .. rwm.pdf</description>
 <net name="BUZZ" class="0">
 <segment>
 <pinref part="LS1" gate="G$1" pin="1"/>
-<wire x1="-68.58" y1="25.4" x2="-81.28" y2="25.4" width="0.1524" layer="91"/>
-<label x="-81.28" y="25.4" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="-68.58" y1="25.4" x2="-73.66" y2="25.4" width="0.1524" layer="91"/>
+<label x="-73.66" y="25.4" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="2"/>
@@ -7513,6 +7527,18 @@ Source: www.vishay.com .. rwm.pdf</description>
 <pinref part="U$1" gate="G$1" pin="14/A0/TX3"/>
 <wire x1="-2.54" y1="73.66" x2="15.24" y2="73.66" width="0.1524" layer="91"/>
 <label x="15.24" y="73.66" size="1.778" layer="95" xref="yes"/>
+</segment>
+</net>
+<net name="BUZZ-RES" class="0">
+<segment>
+<pinref part="LS1" gate="G$1" pin="2"/>
+<wire x1="-68.58" y1="22.86" x2="-83.82" y2="22.86" width="0.1524" layer="91"/>
+<label x="-83.82" y="22.86" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
+<segment>
+<pinref part="R2" gate="G$1" pin="1"/>
+<wire x1="-63.5" y1="15.24" x2="-68.58" y2="15.24" width="0.1524" layer="91"/>
+<label x="-68.58" y="15.24" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 </nets>
