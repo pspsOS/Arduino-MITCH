@@ -2675,8 +2675,6 @@ design rules under a new name.</description>
 <contactref element="U$6" pad="GND2"/>
 <contactref element="U$6" pad="GND1"/>
 <contactref element="FLASH" pad="4"/>
-<wire x1="6.275" y1="97.663" x2="22.733" y2="97.663" width="1.27" layer="1"/>
-<wire x1="22.733" y1="97.663" x2="29.21" y2="104.14" width="1.27" layer="1"/>
 <wire x1="38.1" y1="38.1" x2="38.1" y2="50.8" width="1.27" layer="16"/>
 <wire x1="38.1" y1="50.8" x2="38.1" y2="60.96" width="1.27" layer="16"/>
 <wire x1="38.1" y1="60.96" x2="38.1" y2="63.754" width="1.27" layer="16"/>
@@ -2736,6 +2734,8 @@ design rules under a new name.</description>
 <wire x1="6.731" y1="97.663" x2="6.275" y2="97.663" width="0.635" layer="16"/>
 <wire x1="33.02" y1="5.08" x2="33.02" y2="22.987" width="1.27" layer="16"/>
 <wire x1="33.02" y1="22.987" x2="30.48" y2="25.527" width="1.27" layer="16"/>
+<wire x1="6.275" y1="97.663" x2="22.733" y2="97.663" width="1.27" layer="16"/>
+<wire x1="22.733" y1="97.663" x2="29.21" y2="104.14" width="1.27" layer="16"/>
 </signal>
 <signal name="BAT_VIN">
 <contactref element="J1" pad="1"/>
@@ -2946,11 +2946,11 @@ design rules under a new name.</description>
 <wire x1="13.8501" y1="84.1713" x2="13.8501" y2="78.09675" width="0.635" layer="1"/>
 <wire x1="13.8501" y1="78.09675" x2="11.95335" y2="76.2" width="0.635" layer="16"/>
 <wire x1="11.95335" y1="76.2" x2="10.16" y2="76.2" width="0.635" layer="16"/>
-<wire x1="17.78" y1="98.2754" x2="16.002" y2="96.4974" width="0.635" layer="16"/>
-<via x="16.002" y="96.4974" extent="1-16" drill="0.35"/>
-<wire x1="16.002" y1="96.4974" x2="13.3576" y2="93.853" width="0.635" layer="1"/>
-<wire x1="13.3576" y1="93.853" x2="13.335" y2="93.853" width="0.635" layer="1"/>
-<wire x1="17.78" y1="101.6" x2="17.78" y2="98.2754" width="0.635" layer="16"/>
+<wire x1="13.335" y1="93.853" x2="13.3576" y2="93.853" width="0.635" layer="1"/>
+<wire x1="17.78" y1="98.2754" x2="17.78" y2="98.8286" width="0.635" layer="1"/>
+<via x="17.78" y="98.8286" extent="1-16" drill="0.35"/>
+<wire x1="17.78" y1="98.8286" x2="17.78" y2="101.6" width="0.635" layer="16"/>
+<wire x1="13.3576" y1="93.853" x2="17.78" y2="98.2754" width="0.635" layer="1"/>
 </signal>
 <signal name="LED-RES">
 <contactref element="LED1" pad="K"/>

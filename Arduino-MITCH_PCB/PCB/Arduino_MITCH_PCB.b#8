@@ -2717,8 +2717,6 @@ design rules under a new name.</description>
 <wire x1="12.6482375" y1="88.71585" x2="12.6482375" y2="91.2897625" width="1.27" layer="16"/>
 <wire x1="12.6482375" y1="91.2897625" x2="11.86935" y2="92.06865" width="1.27" layer="16"/>
 <contactref element="LS1" pad="2"/>
-<wire x1="6.275" y1="97.663" x2="15.788" y2="107.176" width="0.635" layer="16"/>
-<wire x1="15.788" y1="107.176" x2="15.788" y2="113.03" width="0.635" layer="16"/>
 <contactref element="R1" pad="2"/>
 <wire x1="33.02" y1="5.08" x2="33.02" y2="22.987" width="0.635" layer="1"/>
 <wire x1="33.02" y1="22.987" x2="30.48" y2="25.527" width="0.635" layer="1"/>
@@ -2738,6 +2736,10 @@ design rules under a new name.</description>
 <vertex x="32.004" y="17.78"/>
 <vertex x="23.368" y="17.78"/>
 </polygon>
+<wire x1="15.788" y1="113.03" x2="11.43" y2="108.672" width="0.635" layer="16"/>
+<wire x1="11.43" y1="108.672" x2="11.43" y2="102.362" width="0.635" layer="16"/>
+<wire x1="11.43" y1="102.362" x2="6.731" y2="97.663" width="0.635" layer="16"/>
+<wire x1="6.731" y1="97.663" x2="6.275" y2="97.663" width="0.635" layer="16"/>
 </signal>
 <signal name="BAT_VIN">
 <contactref element="J1" pad="1"/>

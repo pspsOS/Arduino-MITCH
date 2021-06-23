@@ -722,12 +722,12 @@
 <pin name="!CS" x="0" y="0" length="middle"/>
 <pin name="SO/IO1" x="0" y="-2.54" length="middle"/>
 <pin name="!WP!/IO2" x="0" y="-5.08" length="middle"/>
-<pin name="SI/IO0" x="0" y="-7.62" length="middle"/>
+<pin name="VSS" x="0" y="-7.62" length="middle"/>
 <pin name="EP" x="20.32" y="-20.32" length="middle" rot="R90"/>
-<pin name="VSS" x="40.64" y="0" length="middle" rot="R180"/>
-<pin name="VCC" x="40.64" y="-2.54" length="middle" rot="R180"/>
+<pin name="VCC" x="40.64" y="0" length="middle" rot="R180"/>
+<pin name="HOLD/IO3" x="40.64" y="-2.54" length="middle" rot="R180"/>
 <pin name="SCK" x="40.64" y="-5.08" length="middle" rot="R180"/>
-<pin name="!HOLD!/IO3" x="40.64" y="-7.62" length="middle" rot="R180"/>
+<pin name="SI/IO0" x="40.64" y="-7.62" length="middle" rot="R180"/>
 </symbol>
 <symbol name="1725656">
 <wire x1="5.08" y1="2.54" x2="15.24" y2="2.54" width="0.254" layer="94"/>
@@ -942,14 +942,14 @@ Source: &lt;a href="https://business.kioxia.com/en-us/memory/detail.TC58CVG2S0HR
 <device name="" package="SON127P800X600X80-9N">
 <connects>
 <connect gate="G$1" pin="!CS" pad="1"/>
-<connect gate="G$1" pin="!HOLD!/IO3" pad="5"/>
 <connect gate="G$1" pin="!WP!/IO2" pad="3"/>
 <connect gate="G$1" pin="EP" pad="9"/>
+<connect gate="G$1" pin="HOLD/IO3" pad="7"/>
 <connect gate="G$1" pin="SCK" pad="6"/>
-<connect gate="G$1" pin="SI/IO0" pad="4"/>
+<connect gate="G$1" pin="SI/IO0" pad="5"/>
 <connect gate="G$1" pin="SO/IO1" pad="2"/>
-<connect gate="G$1" pin="VCC" pad="7"/>
-<connect gate="G$1" pin="VSS" pad="8"/>
+<connect gate="G$1" pin="VCC" pad="8"/>
+<connect gate="G$1" pin="VSS" pad="4"/>
 </connects>
 <technologies>
 <technology name="">

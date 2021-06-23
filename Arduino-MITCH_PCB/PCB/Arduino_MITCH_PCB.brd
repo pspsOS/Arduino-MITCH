@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="10" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
+<grid distance="10" unitdist="mil" unit="inch" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -1925,6 +1925,8 @@
 <rectangle x1="15.1003" y1="124.1171" x2="15.1765" y2="124.1425" layer="21"/>
 <text x="0" y="99.06" size="2.54" layer="21">+</text>
 <text x="0.254" y="96.266" size="3.175" layer="21">-</text>
+<text x="21.844" y="115.316" size="1.778" layer="21">+</text>
+<text x="17.018" y="115.57" size="1.778" layer="21">-</text>
 </plain>
 <libraries>
 <library name="Arduino-MITCH_Breakouts">
@@ -2725,16 +2727,6 @@ design rules under a new name.</description>
 <wire x1="6.275" y1="97.663" x2="6.275" y2="90.245" width="0.635" layer="16"/>
 <wire x1="6.275" y1="90.245" x2="6.35" y2="90.17" width="0.635" layer="16"/>
 <wire x1="10.25" y1="92.075" x2="8.636" y2="92.075" width="0.635" layer="1"/>
-<polygon width="0.254" layer="16">
-<vertex x="1.778" y="39.37"/>
-<vertex x="1.778" y="93.98"/>
-<vertex x="6.604" y="98.806"/>
-<vertex x="43.688" y="98.806"/>
-<vertex x="57.658" y="84.836"/>
-<vertex x="57.658" y="42.672"/>
-<vertex x="32.766" y="17.78"/>
-<vertex x="23.368" y="17.78"/>
-</polygon>
 <wire x1="6.731" y1="97.663" x2="6.275" y2="97.663" width="0.635" layer="16"/>
 <wire x1="33.02" y1="5.08" x2="33.02" y2="22.987" width="1.27" layer="16"/>
 <wire x1="33.02" y1="22.987" x2="30.48" y2="25.527" width="1.27" layer="16"/>
@@ -2747,6 +2739,12 @@ design rules under a new name.</description>
 <via x="8.636" y="92.075" extent="1-16" drill="0.35"/>
 <wire x1="8.636" y1="92.075" x2="6.731" y2="90.17" width="0.635" layer="1"/>
 <wire x1="6.731" y1="90.17" x2="6.35" y2="90.17" width="0.635" layer="1"/>
+<polygon width="0.635" layer="16">
+<vertex x="0" y="127"/>
+<vertex x="63.5" y="127"/>
+<vertex x="63.5" y="0"/>
+<vertex x="0" y="0"/>
+</polygon>
 </signal>
 <signal name="BAT_VIN">
 <contactref element="J1" pad="1"/>
@@ -2787,17 +2785,15 @@ design rules under a new name.</description>
 <contactref element="U$1" pad="3V3_LO"/>
 <contactref element="U$6" pad="VIN2"/>
 <contactref element="FLASH" pad="8"/>
-<wire x1="10.65975" y1="82.4865" x2="9.4279" y2="82.4865" width="0.635" layer="16"/>
 <wire x1="14.40625" y1="78.74" x2="10.65975" y2="82.4865" width="0.635" layer="16"/>
 <via x="35.941" y="56.388" extent="1-16" drill="0.35"/>
 <wire x1="35.941" y1="56.388" x2="32.9222625" y2="56.388" width="1.27" layer="16"/>
 <wire x1="35.941" y1="56.388" x2="46.228" y2="56.388" width="1.27" layer="1"/>
 <wire x1="46.228" y1="56.388" x2="50.8" y2="60.96" width="1.27" layer="1"/>
-<wire x1="9.4279" y1="82.4865" x2="7.9375" y2="82.4865" width="0.635" layer="16"/>
+<wire x1="10.65975" y1="82.4865" x2="7.9375" y2="82.4865" width="0.635" layer="16"/>
 <wire x1="7.9375" y1="82.4865" x2="4.572" y2="85.852" width="0.635" layer="16"/>
 <via x="4.572" y="85.852" extent="1-16" drill="0.35"/>
 <wire x1="4.572" y1="85.852" x2="2.45" y2="87.974" width="0.635" layer="1"/>
-<wire x1="2.45" y1="87.974" x2="2.45" y2="88.265" width="0.635" layer="1"/>
 <wire x1="28.956" y1="60.3542625" x2="28.956" y2="69.85" width="1.27" layer="16"/>
 <via x="28.956" y="69.85" extent="1-16" drill="0.35"/>
 <wire x1="28.956" y1="69.85" x2="28.956" y2="75.184" width="1.27" layer="1"/>
@@ -2806,8 +2802,7 @@ design rules under a new name.</description>
 <wire x1="25.4" y1="78.74" x2="15.748" y2="78.74" width="0.635" layer="1"/>
 <via x="15.748" y="78.74" extent="1-16" drill="0.35"/>
 <wire x1="15.748" y1="78.74" x2="14.40625" y2="78.74" width="0.635" layer="16"/>
-<wire x1="2.45" y1="88.265" x2="2.45" y2="89.244" width="0.635" layer="1"/>
-<wire x1="2.45" y1="89.244" x2="2.286" y2="89.408" width="0.635" layer="1"/>
+<wire x1="2.45" y1="87.974" x2="2.45" y2="88.265" width="0.635" layer="1"/>
 </signal>
 <signal name="SCL0">
 <contactref element="U$1" pad="19/A5/SCL"/>
@@ -3002,6 +2997,7 @@ design rules under a new name.</description>
 <approved hash="4,1,9afd8896717b1388"/>
 <approved hash="4,16,0d5f2db0335f6328"/>
 <approved hash="4,16,9afd8896717b1388"/>
+<approved hash="4,1,a15a1a8ef1e2a3b3"/>
 </errors>
 </board>
 </drawing>
