@@ -40,14 +40,17 @@ void nandBufferLoad(uint32_t rowAddr){
 	cmd[3] = rowAddr;
 	cmd[2] = rowAddr >> 8;
 	cmd[1] = rowAddr >> 16;
-	if (sendSPI(&cmd[0], 4, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
-		handleHalError(NAND);
-		return;
-	}
+	
+	//if (sendSPI(&cmd[0], 4, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
+	//	handleHalError(NAND);
+	//	return;
+	//}
+
+	customTransfer(cmd, NULL, 4, 0);
 
 	do{
 		feature = getFeature(FEATURE_ADDR_C);
-		oip = getBit(feature, 0);
+		oip = feature & 0x01;
 	}while(oip);
 //#endif
 }
@@ -73,11 +76,15 @@ void nandBufferRead(uint16_t colAddr, uint8_t data[], uint8_t size){
 	cmd[2] = colAddr;
 	cmd[1] = colAddr >> 8;
 	cmd[3] = 0x00; //dummy byte
-	if (recieveSPI(&cmd[0], 4, data, size, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS))
-	{
-		handleHalError(NAND);
-		return;
-	}
+
+	//if (recieveSPI(&cmd[0], 4, data, size, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS))
+	//{
+	//	handleHalError(NAND);
+	//	return;
+	//}
+
+	customTransfer(cmd, data, 4, size);
+
 //#endif
 }
 
@@ -99,18 +106,19 @@ void nandBufferWrite(uint16_t colAddr, uint8_t data[], uint8_t size){
 	cmd[2] = colAddr;
 	cmd[1] = colAddr >> 8;
 
-	lockSpi(nandSpiLock);
+	//lockSpi(nandSpiLock);
+	//if (sendSPI(&cmd[0], 3, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
+	//	handleHalError(NAND);
+	//	return;
+	//}
+	//if (sendSPI(&data[0], size, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
+	//	handleHalError(NAND);
+	//	return;
+	//}
+	//unlockSpi(nandSpiLock);
 
-	if (sendSPI(&cmd[0], 3, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
-		handleHalError(NAND);
-		return;
-	}
+	customDoubleTransfer(cmd, data, 3, size);
 
-	if (sendSPI(&data[0], size, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
-		handleHalError(NAND);
-		return;
-	}
-	unlockSpi(nandSpiLock);
 }
 
 /**
@@ -135,10 +143,13 @@ void nandBufferExecute(uint32_t rowAddr){
 	cmd[3] = rowAddr;
 	cmd[2] = rowAddr >> 8;
 	cmd[1] = rowAddr >> 16;
-	if (sendSPI(&cmd[0], 4, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
-		handleHalError(NAND);
-		return;
-	}
+	
+	//if (sendSPI(&cmd[0], 4, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
+	//	handleHalError(NAND);
+	//	return;
+	//}
+
+	customTransfer(cmd, NULL, 4, 0);
 
 	/*for (int i=0; i<5; i++){
 		feature = getFeature(FEATURE_ADDR_C);
@@ -152,10 +163,11 @@ void nandBufferExecute(uint32_t rowAddr){
 		if (!oip) i = 5;
 		//printf("Exiting For Loop");
 	}*/
-	for(int i=0;i<10;i++){
+
+	for(int i = 0; i < 10; i++){
 		feature = getFeature(FEATURE_ADDR_C);
-		oip = getBit(feature, 0);
-		if(!oip) i=10;
+		oip = feature & 0x01;
+		if(!oip) i = 10;
 	}
 
 	/*do{
@@ -221,10 +233,13 @@ void writeEnable(){
 
 	// Send Command
 	cmd = W_ENABLE;
-	if (sendSPI(&cmd, 1, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
-		handleHalError(NAND);
-		return;
-	}
+	
+	//if (sendSPI(&cmd, 1, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
+	//	handleHalError(NAND);
+	//	return;
+	//}
+
+	customTransfer(cmd, NULL, 1, 0);
 }
 
 /**
@@ -239,10 +254,13 @@ void writeDisable(){
 
 	// Send Command
 	cmd = W_DISABLE;
-	if (sendSPI(&cmd, 1, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
-		handleHalError(NAND);
-		return;
-	}
+	
+	//if (sendSPI(&cmd, 1, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
+	//	handleHalError(NAND);
+	//	return;
+	//}
+
+	customTransfer(cmd, NULL, 1, 0);
 }
 
 /**
@@ -261,9 +279,13 @@ uint8_t getFeature(uint8_t featureAddr){
 	// Send Command
 	cmd[0] = GET_FEATURE;
 	cmd[1] = featureAddr;
-	if (recieveSPI(&cmd[0], 2, &feature, 1, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
-		handleHalError(NAND);
-	}
+	
+	//if (recieveSPI(&cmd[0], 2, &feature, 1, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
+	//	handleHalError(NAND);
+	//}
+
+	customTransfer(cmd, feature, 2, 1);
+
 	return feature;
 }
 
@@ -284,13 +306,13 @@ void setFeature(uint8_t featureAddr, uint8_t featureVal){
 	cmd[0] = SET_FEATURE;
 	cmd[1] = featureAddr;
 	cmd[2] = featureVal;
-	
-	SPI.writeBytes_(cmd, 3);
-	
+		
 	//if (sendSPI(&cmd[0], 3, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
 	//	handleHalError(NAND);
 	//	return;
 	//}
+
+	customTransfer(cmd, NULL, 3, 0);
 }
 
 /**
@@ -314,20 +336,24 @@ void eraseBlock(uint32_t rowAddr){
 	cmd[1] = rowAddr >> 16;
 
 	writeEnable();
-	if (sendSPI(&cmd[0], 4, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
-		handleHalError(NAND);
-		return;
-	}
+	
+	//if (sendSPI(&cmd[0], 4, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
+	//	handleHalError(NAND);
+	//	return;
+	//}
+
+	customTransfer(cmd, NULL, 4, 0);
 
 	do{
 		feature = getFeature(FEATURE_ADDR_C);
-		oip = getBit(feature, 0);
+		oip = feature & 0x01;
 	}while(oip);
+
 	writeDisable();
 }
 
 void eraseAll(){
-	for (int i=0; i<MAX_BLOCK; i++){
+	for (int i = 0; i < MAX_BLOCK; i++){
 		eraseBlock(i << 6);
 	}
 }
