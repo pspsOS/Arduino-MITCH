@@ -4,7 +4,7 @@
 //Includes
   //#include "genericInterface.h"
   //#include "../IncPSP/gpio.h"
-#include <SPI.h>
+#include "./PSPHA_SPI.h"
 
 //NAND Pins
 #define NAND_SCK (13)

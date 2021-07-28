@@ -1,19 +1,29 @@
-#include <nandInterface.h>
+#include "nandInterface.h"
   //#include <common.h>
 
   //spiLock_t* nandSpiLock;
+//SPIClass spiNand = SPIClass(port(), hardware());
+//SPISettings spiNandSettings = SPISettings();
+
+
 
 void nandInit(bool* nandNomPtr) {
-	SPI.pins(NAND_SCK, NAND_MISO, NAND_MOSI, NAND_CS);
+	pinMode(NAND_CS, OUTPUT);
+	
 	SPI.begin();
+	//spiNand.setSCK( (uint8_t) NAND_SCK);
+	//spiNand.setMISO( (uint8_t) NAND_MISO);
+	//spiNand.setMOSI((uint8_t) NAND_MOSI);
+	//spiNand.setCS((uint8_t) NAND_CS);
 	
 	//nomPtr[NAND] = nandNomPtr;
 	//nandSpiLock = registerSpiLock();
 	//setSpiLock(NAND_CS_GPIO_Port, NAND_CS_Pin, nandSpiLock);
-	//*nandNomPtr = true;
+	*nandNomPtr = true;
 
 	setFeature(FEATURE_ADDR_A, 0x00);
 	setFeature(FEATURE_ADDR_B, 0x10);
+	//SPI.endTransaction();
 }
 
 
@@ -23,7 +33,7 @@ void nandInit(bool* nandNomPtr) {
  *
  * @param rowAddr: The 17 bit row address
  *
- * @author Mark Batistich
+ * @author Mark Batistich (feat. Vishnu Vijay)
  * @date 01/21/2021
  */
 
@@ -45,8 +55,9 @@ void nandBufferLoad(uint32_t rowAddr){
 	//	handleHalError(NAND);
 	//	return;
 	//}
-
-	customTransfer(cmd, NULL, 4, 0);
+	digitalWrite(NAND_CS, LOW);
+	SPI.customTransfer(cmd, NULL, 4, 0);
+	digitalWrite(NAND_CS, HIGH);
 
 	do{
 		feature = getFeature(FEATURE_ADDR_C);
@@ -62,7 +73,7 @@ void nandBufferLoad(uint32_t rowAddr){
  * @param size: The number of bytes to read/write
  * @param colAddr: The 13 bit column address
  *
- * @author Mark Batistich
+ * @author Mark Batistich (feat. Vishnu Vijay)
  * @date 01/24/2021
  */
 
@@ -82,8 +93,9 @@ void nandBufferRead(uint16_t colAddr, uint8_t data[], uint8_t size){
 	//	handleHalError(NAND);
 	//	return;
 	//}
-
-	customTransfer(cmd, data, 4, size);
+	digitalWrite(NAND_CS, LOW);
+	SPI.customTransfer(cmd, data, 4, size);
+	digitalWrite(NAND_CS, HIGH);
 
 //#endif
 }
@@ -95,7 +107,7 @@ void nandBufferRead(uint16_t colAddr, uint8_t data[], uint8_t size){
  * @param size: The number of bytes to read/write
  * @param colAddr: The 13 bit column address
  *
- * @author Mark Batistich
+ * @author Mark Batistich (feat. Vishnu Vijay)
  * @date 01/24/2021
  */
 void nandBufferWrite(uint16_t colAddr, uint8_t data[], uint8_t size){
@@ -117,8 +129,9 @@ void nandBufferWrite(uint16_t colAddr, uint8_t data[], uint8_t size){
 	//}
 	//unlockSpi(nandSpiLock);
 
-	customDoubleTransfer(cmd, data, 3, size);
-
+	digitalWrite(NAND_CS, LOW);
+	SPI.customDoubleTransfer(cmd, data, 3, size);
+	digitalWrite(NAND_CS, HIGH);
 }
 
 /**
@@ -126,7 +139,7 @@ void nandBufferWrite(uint16_t colAddr, uint8_t data[], uint8_t size){
  *
  * @param rowAddr: The 17 bit row address
  *
- * @author Mark Batistich
+ * @author Mark Batistich (feat. Vishnu Vijay)
  * @date 01/24 /2021
  */
 void nandBufferExecute(uint32_t rowAddr){
@@ -149,7 +162,9 @@ void nandBufferExecute(uint32_t rowAddr){
 	//	return;
 	//}
 
-	customTransfer(cmd, NULL, 4, 0);
+	digitalWrite(NAND_CS, LOW);
+	SPI.customTransfer(cmd, NULL, 4, 0);
+	digitalWrite(NAND_CS, HIGH);
 
 	/*for (int i=0; i<5; i++){
 		feature = getFeature(FEATURE_ADDR_C);
@@ -206,7 +221,7 @@ void nandRead(uint32_t rowAddr, uint16_t colAddr, uint8_t data[], uint8_t size){
  * @param size: The number of bytes to read/write
  * @param colAddr: The 13 bit column address
  *
- * @author Mark Batistich
+ * @author Mark Batistich 
  * @date 01/24/2021
  */
 void nandWrite(uint32_t rowAddr, uint16_t colAddr, uint8_t data[], uint8_t size){
@@ -224,7 +239,7 @@ void nandWrite(uint32_t rowAddr, uint16_t colAddr, uint8_t data[], uint8_t size)
 /**
  * @brief Enables writing
  *
- * @author Mark Batistich
+ * @author Mark Batistich (feat. Vishnu Vijay)
  * @date 01/24/2021
  */
 void writeEnable(){
@@ -238,14 +253,15 @@ void writeEnable(){
 	//	handleHalError(NAND);
 	//	return;
 	//}
-
-	customTransfer(cmd, NULL, 1, 0);
+	digitalWrite(NAND_CS, LOW);
+	SPI.customTransfer(cmd, NULL, 1, 0);
+	digitalWrite(NAND_CS, HIGH);
 }
 
 /**
  * @brief Disables writing
  *
- * @author Mark Batistich
+ * @author Mark Batistich (feat. Vishnu Vijay)
  * @date 01/24/2021
  */
 void writeDisable(){
@@ -259,8 +275,9 @@ void writeDisable(){
 	//	handleHalError(NAND);
 	//	return;
 	//}
-
-	customTransfer(cmd, NULL, 1, 0);
+	digitalWrite(NAND_CS, LOW);
+	SPI.customTransfer(cmd, NULL, 1, 0);
+	digitalWrite(NAND_CS, HIGH);
 }
 
 /**
@@ -268,7 +285,7 @@ void writeDisable(){
  *
  * @param featureAddr: address of the feature to get
  *
- * @author Mark Batistich
+ * @author Mark Batistich (feat. Vishnu Vijay)
  * @date 01/24/2021
  */
 uint8_t getFeature(uint8_t featureAddr){
@@ -283,8 +300,9 @@ uint8_t getFeature(uint8_t featureAddr){
 	//if (recieveSPI(&cmd[0], 2, &feature, 1, NAND_CS_GPIO_Port, NAND_CS_Pin, STORAGE_SPI_BUS)){
 	//	handleHalError(NAND);
 	//}
-
-	customTransfer(cmd, feature, 2, 1);
+	digitalWrite(NAND_CS, LOW);
+	SPI.customTransfer(cmd, feature, 2, 1);
+	digitalWrite(NAND_CS, HIGH);
 
 	return feature;
 }
@@ -295,7 +313,7 @@ uint8_t getFeature(uint8_t featureAddr){
  * @param featureAddr: address of the feature
  * @param featureVal: Value to set
  *
- * @author Mark Batistich
+ * @author Mark Batistich (feat. Vishnu Vijay)
  * @date 01/24/2021
  */
 void setFeature(uint8_t featureAddr, uint8_t featureVal){
@@ -311,8 +329,9 @@ void setFeature(uint8_t featureAddr, uint8_t featureVal){
 	//	handleHalError(NAND);
 	//	return;
 	//}
-
-	customTransfer(cmd, NULL, 3, 0);
+	digitalWrite(NAND_CS, LOW);
+	SPI.customTransfer(cmd, NULL, 3, 0);
+	digitalWrite(NAND_CS, HIGH);
 }
 
 /**
@@ -320,7 +339,7 @@ void setFeature(uint8_t featureAddr, uint8_t featureVal){
  *
  * @param rowAddr: block to erase
  *
- * @author Mark Batistich
+ * @author Mark Batistich (feat. Vishnu Vijay)
  * @date 2/6/2021
  */
 void eraseBlock(uint32_t rowAddr){
@@ -341,8 +360,9 @@ void eraseBlock(uint32_t rowAddr){
 	//	handleHalError(NAND);
 	//	return;
 	//}
-
-	customTransfer(cmd, NULL, 4, 0);
+	digitalWrite(NAND_CS, LOW);
+	SPI.customTransfer(cmd, NULL, 4, 0);
+	digitalWrite(NAND_CS, HIGH);
 
 	do{
 		feature = getFeature(FEATURE_ADDR_C);
