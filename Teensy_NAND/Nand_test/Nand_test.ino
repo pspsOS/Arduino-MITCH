@@ -14,10 +14,13 @@ bool nandNom = false;
 
 void setup() {
   // put your setup code here, to run once:
+  // Comment out the setFeature() calls in the nandInit() function of nandInterface.cpp
+  // Should expect the print function to return 00111000b or 56 
   nandInit(&nandNom);
   uint8_t featA = getFeature(FEATURE_ADDR_A);
   uint8_t featAbit3 = featA & 0x08;
-  Serial.println(featAbit3);
+  Serial.println(featA);
+  //Serial.println(featAbit3);
 }
 
 void loop() {
