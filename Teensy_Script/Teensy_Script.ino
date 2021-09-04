@@ -23,6 +23,8 @@
                        // the ADR jumper is closed the value becomes 0
 // SD def
 // Nand def
+// Buzzer + LED def
+#define LED 14
 
 // ---------------------------------------------------------------------------------------------------------------- //
 // GPS handle
@@ -43,6 +45,8 @@ char filename[20] = { '\0' };
 File textfile;
 char textname[20] = { '\0' };
 // Nand handle
+// Buzzer + LED handle
+const int buzzer = 2; //buzzer to arduino pin 2
 
 // ---------------------------------------------------------------------------------------------------------------- //
 // GPS Struct
@@ -259,7 +263,7 @@ void setup()
     return;
   }
   // write data schema on top line of file
-  logfile.println("BMP_temp,BMP_press,BMP_time,IMU_xaccel,IMU_yaccel,IMU_zaccel,IMU_xgyro,IMU_ygyro,IMU_zgyro,IMU_xmag,IMU_ymag,IMU_zmag,IMU_temp,IMU_time");
+  logfile.println("BMP_temp(oC),BMP_press(Pa),BMP_time,IMU_xaccel(mg),IMU_yaccel(mg),IMU_zaccel(mg),IMU_xgyro(DPS),IMU_ygyro(DPS),IMU_zgyro(DPS),IMU_xmag(uT),IMU_ymag(uT),IMU_zmag(uT),IMU_temp(oC),IMU_time");
   logfile.close();
 
   // attempt to open the file, restart otherwise
@@ -272,6 +276,30 @@ void setup()
   textfile.close();
   
   // Nand Setup
+
+  // Buzzer + LED Setup
+  pinMode(buzzer, OUTPUT); // Set buzzer - pin 9 as an output
+  pinMode(LED, OUTPUT);
+  digitalWrite(LED, HIGH);
+  tone(buzzer, 1000); // Send 1KHz sound signal...
+  delay(500);        // ...for 0.5 sec
+  noTone(buzzer);     // Stop sound...
+  delay(500);        // ...for 0.5 sec
+  tone(buzzer, 1000);
+  delay(500);
+  noTone(buzzer);
+  delay(500);
+  tone(buzzer, 1000);
+  delay(500);
+  noTone(buzzer);
+  delay(500);
+  tone(buzzer, 1000);
+  delay(1000);
+  noTone(buzzer);
+  noTone(buzzer);
+  digitalWrite(LED, LOW);
+  
+  
 }
 
 // ---------------------------------------------------------------------------------------------------------------- //
@@ -312,11 +340,11 @@ void loop()
     Serial.println(" ms");
     
     Serial.print(F("Temperature = "));
-    Serial.print((float)((bmpData_t.raw_tFine * 5 + 128) >> 8)/100);
+    Serial.print((float)((bmpData_t.raw_tFine))); //* 5 + 128) >> 8)/100);
     Serial.println(" *C");
 
     Serial.print(F("Pressure = "));
-    Serial.print((float)(bmpData_t.raw_p)/256);
+    Serial.print((float)(bmpData_t.raw_p)); ///256);
     Serial.println(" Pa");
 
     Serial.println();
@@ -409,9 +437,9 @@ void loop()
   textfile.print("\n-------------------------------------------------------------------------------------------------\n");
   textfile.close();
   logfile = SD.open(filename, FILE_WRITE);
-  logfile.print((float)((bmpData_t.raw_tFine * 5 + 128) >> 8)/100);
+  logfile.print((float)((bmpData_t.raw_tFine))); //* 5 + 128) >> 8)/100);
   logfile.print(",");
-  logfile.print((float)(bmpData_t.raw_p)/256);
+  logfile.print((float)(bmpData_t.raw_p)); ///256);
   logfile.print(",");
   logfile.print(bmpData_t.timeStamp);
   logfile.print(",");
