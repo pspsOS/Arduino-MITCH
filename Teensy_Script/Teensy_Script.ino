@@ -9,7 +9,7 @@
 
 // ---------------------------------------------------------------------------------------------------------------- //
 // GPS def
-#define MAX_NMEA (82)
+#define MAX_NMEA (84)
 // BMP def
 // IMU def
 //#define USE_SPI       // Uncomment this to use SPI
